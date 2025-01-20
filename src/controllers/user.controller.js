@@ -1,6 +1,7 @@
 import { asyncHandler } from "./utils/asyncHandler.js";
 import { ApiError } from "./utils/ApiError.js";
 import { uploadOnCloudinary } from "../utils/cloudinary";
+import { ApiResponse } from "../utils/ApiResponse";
 
 const registerUser = asyncHandler(async (req, res) => {
   // get user details from frotend
@@ -41,10 +42,18 @@ const registerUser = asyncHandler(async (req, res) => {
   const user = await User.create(
     fullName,
     email,
-    username=username.toLowerCase(),
-    avatar=avatar.url,
-    coverImage=coverImage.url
+    (username = username.toLowerCase()),
+    (avatar = avatar.url),
+    (coverImage = coverImage.url)
   );
+
+  const createdUser = await User.findOne(user._id).select("-password -refreshToken");
+
+  if(!createdUser)
+  {
+    throw new ApiError(500, "Error registering the user")
+  }
+  return res.status(201).json(ApiResponse(200,createdUser,"user registered successfully"))
 });
 
 export { registerUser };
