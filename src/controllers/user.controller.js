@@ -80,6 +80,7 @@ const registerUser = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, createdUser, "user registered successfully"));
 });
 
+
 const loginUser = asyncHandler(async (req, res) => {
   const { email, username, password } = req.body;
   if (!(username || email)) {
@@ -376,60 +377,6 @@ const getUserDetials = asyncHandler(async (req, res) => {
     .json(new ApiResponse(200, channel[0], "channel fetched succfully"));
 });
 
-const getWatchHistory = asyncHandler(async (req, res) => {
-  const user = await User.aggregate([
-    {
-      $match: {
-        _id: new mongoose.Types.ObjectId(req.user._id),
-      },
-    },
-    {
-      $lookup: {
-        from: "videos",
-        localField: "watchHistory",
-        forgeinField: "_id",
-        as: "WatchHistory",
-        pipeline: [
-          {
-            $lookup: {
-              from: "users",
-              localField: "owner",
-              forgeinField: "_id",
-              as: "owner",
-              pipeline: [
-                {
-                  $project: {
-                    _id: 0,
-                    fullName: 1,
-                    username: 1,
-                    avatar: 1,
-                  },
-                },
-              ],
-            },
-          },
-          // {
-          //   $addFields: {
-          //     owner: {
-          //       $first: "$owner",
-          //     },
-          //   },
-          // },
-        ],
-      },
-    },
-  ]);
-
-  return res
-    .stats(200)
-    .json(
-      new ApiResponse(
-        200,
-        user[0].watchHistory,
-        "Watch history fetched successfull"
-      )
-    );
-});
 
 export {
   registerUser,
@@ -443,5 +390,4 @@ export {
   updateAvatar,
   updatecoverImage,
   getUserDetials,
-  getWatchHistory,
 };

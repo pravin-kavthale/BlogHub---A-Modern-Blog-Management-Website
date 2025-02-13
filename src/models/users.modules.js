@@ -32,7 +32,7 @@ const userSchema = new Schema(
     coverImage: {
       type: String,
     },
-    watchHistory: {
+    likedBlogs: {
       type: Schema.Types.ObjectId,
       ref: "Blog",
     },
