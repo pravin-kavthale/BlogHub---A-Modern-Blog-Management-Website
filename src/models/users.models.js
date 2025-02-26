@@ -33,7 +33,7 @@ const userSchema = new Schema(
       type: String,
     },
     likedBlogs: {
-      type: Schema.Types.ObjectId,
+      type: [Schema.Types.ObjectId],
       ref: "Blog",
     },
     password: {
@@ -41,7 +41,7 @@ const userSchema = new Schema(
       required: [true, "password is required"],
     },
     refreshToken: {
-      typ: String,
+      type: String,
     },
   },
   { timestamps: true }
@@ -68,7 +68,7 @@ userSchema.methods.generateAccessToken = function () {
     },
     process.env.ACCESS_TOKEN_SECRET,
     {
-      expiresIn: ACCESS_TOKEN_EXPIRY,
+      expiresIn: process.env.ACCESS_TOKEN_EXPIRY,
     }
   );
 };
@@ -80,7 +80,7 @@ userSchema.methods.generateRefreshToken = function () {
     },
     process.env.REFERESH_TOKEN_SECRET,
     {
-      expiresIn: REFERESH_TOKEN_EXPIRY,
+      expiresIn: process.env.REFERESH_TOKEN_EXPIRY,
     }
   );
 };

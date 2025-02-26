@@ -1,11 +1,11 @@
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
-import { User } from "../models/users.modules.js";
+import { User } from "../models/users.models.js";
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import jwt from "jsonwebtoken";
 import { validateHeaderName } from "http";
-import { Subscription } from "../models/subscription.modules.js";
+import { Subscription } from "../models/subscription.models.js";
 import { subscribe } from "diagnostics_channel";
 import mongoose from "mongoose";
 
@@ -79,7 +79,6 @@ const registerUser = asyncHandler(async (req, res) => {
     .status(201)
     .json(new ApiResponse(200, createdUser, "user registered successfully"));
 });
-
 
 const loginUser = asyncHandler(async (req, res) => {
   const { email, username, password } = req.body;

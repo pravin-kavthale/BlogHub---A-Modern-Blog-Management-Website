@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 const blogSchema = new mongoose.Schema(
   {
     content: {
@@ -32,18 +32,20 @@ const blogSchema = new mongoose.Schema(
       type: Schema.Types.ObjectId,
       ref: "User",
     },
-    Comments: [
+    comments: [
       {
         type: Schema.Types.ObjectId,
         ref: "Comment",
       },
     ],
-    likes: [
-      {
-        type: Schema.Types.ObjectId,
-        ref: "Like",
-      },
-    ],
+    likes: {
+      type: Schema.Types.ObjectId,
+      ref: "Like",
+    },
+    category: {
+      type: String,
+      required: true,
+    },
   },
   { timestamps: true }
 );
